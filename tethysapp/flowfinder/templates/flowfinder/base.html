@@ -1,0 +1,133 @@
+{% extends "tethys_apps/app_base.html" %}
+
+{% load static %}
+
+{% block title %}{{ tethys_app.name }}{% endblock %}
+
+{% block app_icon %}
+  {# The path you provided in your app.py is accessible through the tethys_app.icon context variable #}
+  <img src="{% if 'http' in tethys_app.icon %}{{ tethys_app.icon }}{% else %}{% static tethys_app.icon %}{% endif %}" />
+{% endblock %}
+
+{# The name you provided in your app.py is accessible through the tethys_app.name context variable #}
+{% block app_title %}{{ tethys_app.name }}{% endblock %}
+
+{% block app_navigation_items %}
+  <div id="nav-outer-box">
+
+    <div class="nav-container">
+      <div>Delineate Watershed</div>
+      <button id="get-dem-btn" class="nav-button">Find Streams</button>
+      <button id="del-wat-btn" class="nav-button">Delineate Watershed</button>
+      <button id="down-wat-btn" class="nav-button">Download Watershed</button>
+      <button id="clear-map-btn" class="nav-button">Clear Map</button>
+    </div>
+    <div class="nav-container">
+      <div>Select Elevation</div>
+      <select id="elevation-select">
+        <option value="USGS_10_meter">USGS 1/3 Arc-Second (10m)</option>
+        <option value="SRTM_DEM4">SRTM DEM 3 Arc-Second (90m)</option>
+        <option value="MERIT_DEM">MERIT DEM 3 Arc-Second (90m)</option>
+        <option value="Netherlands_0.5m_Interpolated">Netherlands 0.5m DEM</option>
+      </select>
+      <div>Elevation Opacity</div>
+      <input id="elevation-layer-opacity" type="range" min="0" max="1" value="1" step="0.01">
+
+      <select id="data-select">
+        <option value="none">All Products</option>
+        <option value="ECMWF_ERA5_DAILY:total_precipitation">total_precipitation</option>
+        <option value="GLDAS2_1:Albedo_inst">Albedo_inst</option>
+        <option value="GLDAS2_1:AvgSurfT_inst">AvgSurfT_inst</option>
+        <option value="GLDAS2_1:CanopInt_inst">CanopInt_inst</option>
+        <option value="GLDAS2_1:ECanop_tavg">ECanop_tavg</option>
+        <option value="GLDAS2_1:ESoil_tavg">ESoil_tavg</option>
+        <option value="GLDAS2_1:Evap_tavg">Evap_tavg</option>
+        <option value="GLDAS2_1:LWdown_f_tavg">LWdown_f_tavg</option>
+        <option value="GLDAS2_1:Lwnet_tavg">Lwnet_tavg</option>
+        <option value="GLDAS2_1:PotEvap_tavg">PotEvap_tavg</option>
+        <option value="GLDAS2_1:Psurf_f_inst">Psurf_f_inst</option>
+        <option value="GLDAS2_1:Qair_f_inst">Qair_f_inst</option>
+        <option value="GLDAS2_1:Qg_tavg">Qg_tavg</option>
+        <option value="GLDAS2_1:Qh_tavg">Qh_tavg</option>
+        <option value="GLDAS2_1:Qle_tavg">Qle_tavg</option>
+        <option value="GLDAS2_1:Qs_acc">Qs_acc</option>
+        <option value="GLDAS2_1:Qsb_acc">Qsb_acc</option>
+        <option value="GLDAS2_1:Qsm_acc">Qsm_acc</option>
+        <option value="GLDAS2_1:Rainf_f_tavg">Rainf_f_tavg</option>
+        <option value="GLDAS2_1:Rainf_tavg">Rainf_tavg</option>
+        <option value="GLDAS2_1:RootMoist_inst">RootMoist_inst</option>
+        <option value="GLDAS2_1:SWE_inst">SWE_inst</option>
+        <option value="GLDAS2_1:SWdown_f_tavg">SWdown_f_tavg</option>
+        <option value="GLDAS2_1:SnowDepth_inst">SnowDepth_inst</option>
+        <option value="GLDAS2_1:Snowf_tavg">Snowf_tavg</option>
+        <option value="GLDAS2_1:SoilMoi0_10cm_inst">SoilMoi0_10cm_inst</option>
+        <option value="GLDAS2_1:SoilMoi10_40cm_inst">SoilMoi10_40cm_inst</option>
+        <option value="GLDAS2_1:SoilMoi40_100cm_inst">SoilMoi40_100cm_inst</option>
+        <option value="GLDAS2_1:SoilMoi100_200cm_inst">SoilMoi100_200cm_inst</option>
+        <option value="GLDAS2_1:SoilTMP10_40cm_inst">SoilTMP10_40cm_inst</option>
+        <option value="GLDAS2_1:SoilTMP40_100cm_inst">SoilTMP40_100cm_inst</option>
+        <option value="GLDAS2_1:Swnet_tavg">Swnet_tavg</option>
+        <option value="GLDAS2_1:Tair_f_inst">Tair_f_inst</option>
+        <option value="GLDAS2_1:Tveg_tavg">Tveg_tavg</option>
+        <option value="GLDAS2_1:Wind_f_inst">Wind_f_inst</option>
+      </select>
+      <div>Data Opacity</div>
+      <input id="data-layer-opacity" type="range" min="0" max="1" value="1" step="0.01">
+    </div>
+    <div class="nav-container">
+      <button id="plot-data-btn" class="nav-button">Plot Data</button>
+      <div class="flex-row">
+        <input id="first-date" type="date" class="date-picker" min="2000-01-01" max="2022-05-11" value="2000-01-01">
+        <div>to</div>
+        <input id="second-date" type="date" class="date-picker" min="2000-01-01" max="2022-05-11" value="2022-05-11">
+      </div>
+      <div class="flex-row">
+        <div>to daily  </div>
+        <input id="daily-checkbox" type="checkbox">
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block app_content %}
+{% endblock %}
+
+{% block app_actions_override %}
+{% endblock %}
+
+{% block content_dependent_styles %}
+  {{ block.super }}
+
+  {# -----Leaflet stylesheets------ #}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-timedimension@1.1.1/dist/leaflet.timedimension.control.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  {# -------------------------- #}
+
+  <link href="{% static 'flowfinder/css/main.css' %}" rel="stylesheet"/>
+  <link href="{% static 'flowfinder/css/navigation.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  {# -----PLOTLY SCRIPTS------ #}
+  <script src="https://cdn.plot.ly/plotly-2.8.3.min.js"></script>
+  {# -------------------------- #}
+
+  {# -----LEAFLET SCRIPTS------ #}
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/iso8601-js-period@0.2.1/iso8601.min.js" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/leaflet-timedimension@1.1.1/dist/leaflet.timedimension.min.js" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  {# -------------------------- #}
+
+  {# -----JQUERY SCRIPTS------ #}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70.0-2014.11.23/jquery.blockUI.min.js" type="text/javascript"></script>
+  {# -------------------------- #}
+
+  <script src="{% static 'flowfinder/js/runOnLoad.js' %}" type="module"></script>
+  <script src="{% static 'flowfinder/js/activeVariablesPackage.js' %}" type="text/javascript"></script>
+{% endblock %}

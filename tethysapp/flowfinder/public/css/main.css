@@ -1,0 +1,74 @@
+#app-content-wrapper #app-content {
+    height: 100%;
+    padding: 0;
+    margin: 50px 0 0 0;
+}
+
+#inner-app-content {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+}
+
+#main-window {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+#graphs {
+    display: flex;
+    width: 100%;
+    height: 0;
+    margin: 0px 0px 0px 0px;
+    overflow-y: scroll;
+}
+
+#graph-map-btn {
+    width: 10em;
+    height: 2.1em;
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    margin: 1em;
+    border-radius: 20%;
+}
+
+#graph-btn {
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    font-size: 12pt;
+    background: blue;
+    padding: .1em;
+    margin: 0;
+}
+
+#map-btn {
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    font-size: 12pt;
+    background: #3939ec;
+    padding: .1em;
+    margin: 0;
+}
+
+#slider-bar {
+    height: 100%;
+    width: 0.5em;
+    position: absolute;
+    right: 0;
+    background: gray;
+}
